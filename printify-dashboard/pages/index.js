@@ -1,36 +1,18 @@
-import "./main.css";
+import Head from "next/head"
 
 import Layout from "../components/Layout";
-import Upload from "../components/Upload/Upload";
-import List from "../components/List/List";
 
-import React, { Component } from "react";
-
-class Index extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      list: []
-    };
-  }
-  add = item => {
-    let newList = this.state.list;
-    newList.push({ state: false, file: item });
-    this.setState({ list: newList });
-    console.log(newList);
-  };
-
-  render() {
+const Index =()=>{
+  
     return (
       <Layout>
-        <section className="panel important">
-          <h2>Write a post</h2>
-          <Upload handleAdd={this.add} />
-          <List list={this.state.list} />
-        </section>
+         <Head>
+        <title>Printify</title>
+      </Head>
+        <section className="">Dashboard</section>
       </Layout>
     );
   }
-}
+
 
 export default Index;
