@@ -1,0 +1,28 @@
+@tailwind base;
+
+/* Write your own custom base styles here */
+
+/* Start purging... */
+@tailwind components;
+/* Stop purging. */
+
+/* Write you own custom component styles here */
+
+/* Start purging... */
+@tailwind utilities;
+/* Stop purging. */
+
+/* Your own custom utilities */
+
+@import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css);
+
+.active-link>i{
+    font-size: 1.125rem;
+    color: #5a67d8;
+   
+}
+.active-link>span{
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #5a67d8;
+}
