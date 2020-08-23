@@ -1,5 +1,8 @@
-import mongoose from "mongoose";
-export type UserModel = mongoose.Document & {
+import { Document, Schema, Model, model, Error } from "mongoose";
+import bcrypt from "bcryptjs";
+const JWT = require("jsonwebtoken");
+
+export type UserModel = Document & {
   email: string;
   password: string;
   tokens: Object;
@@ -15,7 +18,7 @@ export type UserModel = mongoose.Document & {
   country: string;
 };
 
-const userSchema = new mongoose.Schema(
+const userSchema = new Schema(
   {
     name: String,
     email: { type: String, unique: true, required: true },
@@ -43,5 +46,28 @@ userSchema.set("toJSON", {
   }
 });
 
-const User = mongoose.model("User", userSchema);
+userSchema.pre("save", function (next) {
+  if (this.isNew) {
+    var salt = bcrypt.genSaltSync(10);
+    var hash = bcrypt.hashSync(this.password, salt);
+    this.password = hash;
+  }
+  next();
+});
+
+userSchema.methods.validPassword = function (inputedPassword: string) {
+  return bcrypt.compareSync(inputedPassword, this.password);
+};
+
+userSchema.methods.getJWT = function () {
+  return JWT.sign({ userId: this._id }, process.env.ACCESS_TOKEN_SIGNATURE_KEY);
+};
+
+userSchema.methods.hashPassword = function () {
+  this.password = bcrypt.hashSync(this.password, 8);
+};
+
+
+
+const User = model("User", userSchema);
 export default User;
