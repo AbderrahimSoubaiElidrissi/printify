@@ -20,10 +20,8 @@ export type UserModel = Document & {
 
 const userSchema = new Schema(
   {
-    name: String,
     email: { type: String, unique: true, required: true },
     password: { type: String, required: true },
-    tokens: Object,
     role: { type: String, default: "USER" },
     firstName: String,
     lastName: String,

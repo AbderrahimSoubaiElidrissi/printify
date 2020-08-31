@@ -5,47 +5,41 @@ import { default as User } from "../models/user";
 
 class AuthController {
     static register = async (req: Request, res: Response) => {
-
+        const data = req.body
         try {
-            const user: any = new User();
-            user.name = req.body.name;
-            user.email = req.body.email;
-            user.password = req.body.password;
+            const user: any = new User(data);
             await user.save();
 
             const token = user.getJWT();
 
-            return res.status(201).json({ data: { user, token } });
+            return res.status(201).json({ user, token });
         } catch (err) {
-            //return error if user unique field already exists
-            if (err.name === "MongoError" && err.code === 11000) {
-                let field = Object.keys(err.keyValue)[0];
-                const response = {
-                    message: `${field} already exists!`,
-                    field: field
-                };
-                return res.status(422).json(response);
-            }
-
-            return res.status(409).json({ message: "error saving data" });
+            console.log(err)
+            return res.status(500).json({ message: err.message || err });
         }
     }
     static login = async (req: Request, res: Response) => {
         let { email, password } = req.body;
         if (!(email && password)) {
-            res.status(400).send();
+            res.status(400).send({
+                message: "Bad request"
+            });
         }
 
         let user: any;
         try {
             user = await User.findOne({ email });
         } catch (error) {
-            res.status(401).send();
+            return res.status(401).send({
+                message: "Unauthorized"
+            });
         }
 
-        if (!user.validPassword(password)) {
-            res.status(401).send();
-            return;
+        if (!user || !user.validPassword(password)) {
+
+            return res.status(401).send({
+                message: "Unauthorized"
+            });
         }
 
         const token = jwt.sign(
@@ -54,7 +48,7 @@ class AuthController {
             { expiresIn: "1h" }
         );
 
-        res.send(token);
+        return res.send({ user, token });
     };
 
     static changePassword = async (req: Request, res: Response) => {
@@ -63,26 +57,32 @@ class AuthController {
 
         const { oldPassword, newPassword } = req.body;
         if (!(oldPassword && newPassword)) {
-            res.status(400).send();
+            res.status(400).json({
+                message: "Bad requesy"
+            });
         }
 
         let user: any;
         try {
             user = await User.findById(id);
         } catch (err) {
-            res.status(401).send();
+            res.status(401).send({
+                message: "Unauthorized"
+            });
         }
 
-        if (!user.validPassword(oldPassword)) {
-            res.status(401).send();
-            return;
+        if (!user || !user.validPassword(oldPassword)) {
+
+            return res.status(401).send({
+                message: "Unauthorized"
+            });
         }
 
 
         user.hashPassword();
         await user.save(user);
 
-        res.status(204).send();
+        res.status(204).json(user);
     };
 }
 export default AuthController;
