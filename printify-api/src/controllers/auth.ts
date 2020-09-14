@@ -84,5 +84,18 @@ class AuthController {
 
         res.status(204).json(user);
     };
+
+    static me = async (req: Request, res: Response) => {
+        let user: any;
+        try {
+            const { userId } = res.locals.jwtPayload;
+            user = await User.findById(userId);
+            return res.json(user);
+        } catch (err) {
+            res.status(401).send({
+                message: "Unauthorized"
+            });
+        }
+    };
 }
 export default AuthController;

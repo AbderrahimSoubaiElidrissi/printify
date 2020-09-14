@@ -3,7 +3,8 @@ import AuthController from "../controllers/auth";
 import { checkJwt } from "../middlewares/checkJwt";
 
 const router = Router();
-//Login route
+router.get("/me", [checkJwt], AuthController.me);
+
 router.post("/login", AuthController.login);
 
 router.post("/register", AuthController.register);
