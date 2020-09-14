@@ -2,7 +2,11 @@ import { Request, Response, NextFunction } from "express";
 import * as jwt from "jsonwebtoken";
 
 export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
-    const token = <string>req.headers["auth"];
+    let token = <string>req.headers["x-access-token"] || <string>req.headers['authorization'];
+
+    if (token.startsWith('Bearer ')) {
+        token = token.slice(7, token.length);
+    }
     let jwtPayload;
 
     try {

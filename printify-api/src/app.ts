@@ -5,13 +5,11 @@ import mongoose from "mongoose";
 import morgan from "morgan";
 import { MONGODB_URI } from "./util/secrets";
 import { apiRouter } from "./routes/main.route";
-import helmet from "helmet";
 import cors from "cors";
 
 const app = express();
 
 app.use(cors());
-app.use(helmet());
 
 // Connect to MongoDB
 
