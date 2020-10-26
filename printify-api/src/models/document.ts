@@ -1,5 +1,6 @@
 import { Document, Schema, model } from "mongoose";
 
+
 export type DocumentModel = Document & {
     filename: string;
     printConfig: Object;

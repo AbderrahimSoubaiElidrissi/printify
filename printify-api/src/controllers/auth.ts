@@ -5,7 +5,7 @@ import { default as User } from "../models/user";
 
 class AuthController {
     static register = async (req: Request, res: Response) => {
-        const data = req.body
+        const data = req.body;
         try {
             const user: any = new User(data);
             await user.save();
@@ -14,7 +14,7 @@ class AuthController {
 
             return res.status(201).json({ user, token });
         } catch (err) {
-            console.log(err)
+            console.log(err);
             return res.status(500).json({ message: err.message || err });
         }
     }

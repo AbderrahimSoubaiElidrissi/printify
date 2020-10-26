@@ -15,7 +15,6 @@ app.use(helmet());
 
 // Connect to MongoDB
 
-
 (() => {
   const connection = mongoose.connection;
   connection.on("connected", () => {
@@ -41,12 +40,12 @@ app.use(helmet());
   const run = async () => {
     await mongoose.connect(MONGODB_URI);
   };
-  run().catch(error => console.error(error));
-})()
+  run().catch((error) => console.error(error));
+})();
 
 app.use(morgan("dev"));
 
-app.set("port", process.env.PORT || 3000);
+app.set("port", process.env.PORT || 5000);
 app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

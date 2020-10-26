@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 
 export let getAll = async (req: Request, res: Response) => {
     try {
-        const user = await Document.find({})
+        const user = await Document.find({});
         return await res.json(user);
     } catch (error) {
         return res.status(500).json({ error });
@@ -25,7 +25,8 @@ export let get = async (req: Request, res: Response) => {
     }
 
     try {
-        const user = await Document.findById(id).exec()
+        // tslint:disable-next-line: semicolon
+        const user = await Document.findById(id).exec();
         return res.json(user);
     } catch (error) {
         return res.status(500).json({ error });
@@ -94,7 +95,7 @@ export let remove = async (req: Request, res: Response) => {
 
     try {
         await Document.findByIdAndRemove(id).exec();
-        return res.status(204).json({})
+        return res.status(204).json({});
     } catch (error) {
         return res.status(500).json({ error });
     }

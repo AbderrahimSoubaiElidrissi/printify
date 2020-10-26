@@ -29,10 +29,10 @@
       "static/chunks/webpack.js",
       "static/chunks/pages/_error.js"
     ],
-    "/queue": [
+    "/queue/[filename]": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
-      "static/chunks/pages/queue.js"
+      "static/chunks/pages/queue/[filename].js"
     ]
   },
   "ampFirstPages": []
