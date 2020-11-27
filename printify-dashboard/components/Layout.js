@@ -29,10 +29,10 @@ const Layout = (props) => {
               <i className="fas fa-bell pl-2 md:pl-3  text-indigo-600"></i>
             </div>
           </header>
-          <main className="h-screen bg-gray-100 mt-20">{props.children}</main>
+          <main className=" bg-gray-100 mt-20">{props.children}</main>
         </div>
 
-        <nav className="w-full md:w-1/5 bg-white  px-2 text fixed bottom-0 md:py-8 md:top-0 md:left-0 h-16 md:h-screen border-r-2 border-gray-200">
+        <nav className="w-full md:w-1/5 bg-white  px-2 text fixed bottom-0 md:py-8 md:top-0 md:left-0 h-16 md:h-screen border-r-2 border-gray-200 ">
           <div className="flex flex-col justify-between h-full md:relative mx-auto  lg:px-6">
             <h1 className="hidden md:block font-black text-2xl  text-indigo-600">
               Printify
