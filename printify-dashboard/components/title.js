@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import {useReducer} from 'react'
 
  const Title=() => {
   const router = useRouter()
