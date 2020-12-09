@@ -1,17 +1,9 @@
-import React, { useContext,useEffect} from "react";
 import Moment from "react-moment";
-import DocContext from "../context/documents/docContext";
-
 import Link from "./Link";
 import Title from "./title";
 
 const Layout = (props) => {
-  const docContext = useContext(DocContext);
-  const {  getDocs} = docContext;
-  useEffect(() => {
-    getDocs();
-    // eslint-disable-next-line
-  }, []);
+  
   const dateToFormat = new Date();
   return (
     <div className="bg-gray-100  leading-normal tracking-normal ">

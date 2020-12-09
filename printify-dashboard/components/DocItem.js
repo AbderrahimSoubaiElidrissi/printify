@@ -1,25 +1,32 @@
-import { useContext, useState } from "react";
+import { useState, useContext } from "react";
+import AlertContext from "../context/alert/alertContext";
 import Link from "next/link";
+import { updateDoc } from "../queries/documentQueries";
+import { useMutation } from "react-query";
 import PropTypes from "prop-types";
-import DocContext from "../context/documents/docContext";
 const DocItem = ({ doc }) => {
-  const docContext = useContext(DocContext);
-  const { updateDoc } = docContext;
+  const alertContext = useContext(AlertContext);
+  const { setAlert } = alertContext;
+  const [mutate, { error }] = useMutation(updateDoc);
+  if (error !== null) {
+    setAlert(error, "danger");
+  }
   const [showModal, setShowModal] = useState(false);
 
   const [currentDoc, setDoc] = useState(doc);
   const handleChange = (e) => {
     setDoc({ ...currentDoc, [e.target.name]: e.target.value });
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const printDate = new Date();
     currentDoc.printHistory.push({ printDate: printDate });
-    updateDoc(currentDoc);
+    const data = await mutate(currentDoc);
+    console.log(data);
     setShowModal(false);
   };
   const { _id, firstName, filename, pagesNumber } = doc;
-  
+
   return (
     <tr className=" ">
       <td className=" py-4 ">John Doe</td>

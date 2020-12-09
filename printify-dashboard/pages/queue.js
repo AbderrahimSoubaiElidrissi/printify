@@ -3,12 +3,21 @@ import DocItem from "../components/DocItem";
 import Spinner from "../components/Spinner";
 import Head from "next/head";
 import { useContext } from "react";
+import { useQuery } from "react-query";
 import DocContext from "../context/documents/docContext";
+import AlertContext from "../context/alert/alertContext";
+
 import DocFilter from "../components/DocFilter";
+import { getAllDocs } from "../queries/documentQueries";
 const Queue = () => {
   const docContext = useContext(DocContext);
-  const { docs, filtered, loading} = docContext;
-  
+  const { filtered } = docContext;
+  const alertContext = useContext(AlertContext);
+  const { setAlert } = alertContext;
+  const { isLoading, error, data: docs } = useQuery("docs", getAllDocs);
+  if (error !== null) {
+    setAlert(error, "danger");
+  }
 
   return (
     <Layout>
@@ -28,19 +37,18 @@ const Queue = () => {
             </tr>
           </thead>
           <tbody className="bg-white my-2">
-            {docs !== null && !loading ? (
+            {docs !== undefined && !isLoading ? (
               filtered !== null ? (
-                filtered.map((doc) => (
-                  <DocItem doc={doc} key={doc._id} />
-                ))
+                filtered.map((doc) => <DocItem doc={doc} key={doc._id} />)
               ) : (
-                docs.map((doc) => (
-                  <DocItem doc={doc} key={doc._id} />
-                ))
+                docs.map((doc) => <DocItem doc={doc} key={doc._id} />)
               )
             ) : (
-              <tr><td colSpan="4"><Spinner /></td></tr>
-              
+              <tr>
+                <td colSpan="4">
+                  <Spinner />
+                </td>
+              </tr>
             )}
           </tbody>
         </table>
